@@ -12,6 +12,7 @@ using CoronaWeb.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using CoronaData.Repositories;
 
 namespace CoronaWeb
 {
@@ -32,8 +33,14 @@ namespace CoronaWeb
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddDbContext<CoronaDataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("coronaData")));
+
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddTransient<IKlantRepository, SQLKlantRepository>();
+            services.AddTransient<CoronaServices.KlantService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

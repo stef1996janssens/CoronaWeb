@@ -1,0 +1,70 @@
+﻿@model CoronaData.Models.Klant
+@{
+    ViewData["Title"] = "Persoonlijke gegevens";
+}
+
+<h1>@ViewData["Title"]</h1>
+<p class="lead">Velden met * zijn verplicht in te vullen</p>
+<form method="post" asp-action="klantGegevensToevoegen" asp-controller="Klant">
+    <div class="row">
+        <div class="form-group col-md-4">
+            <span><label asp-for="Voornaam"></label> *</span>
+            <input asp-for="Voornaam" class="form-control" placeholder="Stef" />
+            <span asp-validation-for="Voornaam" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <span><label asp-for="Familienaam"></label> *</span>
+            <input asp-for="Familienaam" class="form-control" placeholder="Janssens" />
+            <span asp-validation-for="Familienaam" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group col-md-4">
+        <span><label asp-for="Email"></label> *</span>
+        <input asp-for="Email" class="form-control" placeholder="Janssens" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-4">
+            <span><label asp-for="Adres.Straatnaam"></label> *</span>
+            <input asp-for="Adres.Straatnaam" class="form-control" placeholder="Burg" />
+            <span asp-validation-for="Adres.Straatnaam" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-2">
+            <span><label>Huisnummer</label> *</span>
+            <input asp-for="Adres.Huisnr" class="form-control" placeholder="29" />
+            <span asp-validation-for="Adres.Huisnr" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-2">
+            <label asp-for="Adres.Bus"></label>
+            <input asp-for="Adres.Bus" class="form-control" placeholder="V002" />
+            <span asp-validation-for="Adres.Bus" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-4">
+            <span><label>Gemeente</label> *</span>
+            <input asp-for="Adres.Gemeente.Naam" class="form-control" placeholder="Torhout" />
+            <span asp-validation-for="Adres.Gemeente.Naam" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <span><label asp-for="Adres.Gemeente.Postcode"></label> *</span>
+            <input asp-for="Adres.Gemeente.Postcode" class="form-control" placeholder="8820" />
+            <span asp-validation-for="Adres.Gemeente.Postcode" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-4">
+            <span><label>Gsm-nummer</label> *</span>
+            <input asp-for="Gsmnr" class="form-control" placeholder="0499 70 58 14" />
+            <span asp-validation-for="Gsmnr" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label>Telefoonnummer</label>
+            <input asp-for="Telefoonnr" class="form-control" />
+            <span asp-validation-for="Telefoonnr" class="text-danger"></span>
+        </div>
+    </div>
+    <input type="submit" value="Gegevens opslaan" class="btn btn-dark" />
+</form>
+
+

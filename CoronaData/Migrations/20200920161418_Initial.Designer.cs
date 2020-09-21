@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoronaData.Migrations
 {
     [DbContext(typeof(CoronaDataContext))]
-    [Migration("20200914211813_Initial Structure")]
-    partial class InitialStructure
+    [Migration("20200920161418_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -64,6 +64,9 @@ namespace CoronaData.Migrations
 
                     b.Property<int?>("BestellingId")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("Prijs")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -126,18 +129,25 @@ namespace CoronaData.Migrations
                     b.Property<int?>("AdresId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Familienaam")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
                     b.Property<string>("Gsmnr")
+                        .IsRequired()
                         .HasColumnType("nvarchar(15)")
                         .HasMaxLength(15);
 
                     b.Property<string>("Telefoonnr")
                         .HasColumnType("nvarchar(15)")
                         .HasMaxLength(15);
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Voornaam")
                         .IsRequired()

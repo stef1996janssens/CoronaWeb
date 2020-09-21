@@ -15,14 +15,14 @@ namespace CoronaData.Repositories
         public static IConfigurationRoot configuration;
         private bool testMode = false;
 
-        //DbSets
+		//DbSets
 
-        DbSet<Klant> Klanten { get; set; }
-        DbSet<Product> Producten { get; set; }
-        DbSet<Bestellijn> Bestellijnen { get; set; }
-        DbSet<Bestelling> Bestellingen { get; set; }
-        DbSet<Locatie> Locaties { get; set; }
-        DbSet<Adres> Adressen { get; set; }
+		public virtual DbSet<Klant> Klanten { get; set; }
+		public virtual DbSet<Product> Producten { get; set; }
+		public virtual DbSet<Bestellijn> Bestellijnen { get; set; }
+		public virtual DbSet<Bestelling> Bestellingen { get; set; }
+		public virtual DbSet<Locatie> Locaties { get; set; }
+		public virtual DbSet<Adres> Adressen { get; set; }
 
         //Constructors
 
@@ -78,10 +78,11 @@ namespace CoronaData.Repositories
 			//Klant
 			modelBuilder.Entity<Klant>().ToTable("Klanten");
 			modelBuilder.Entity<Klant>().HasKey(klant => klant.Klantnr);
-			modelBuilder.Entity<Klant>().Property(klant => klant.Familienaam).IsRequired().HasMaxLength(50);
-			modelBuilder.Entity<Klant>().Property(klant => klant.Voornaam).IsRequired().HasMaxLength(50);
+			modelBuilder.Entity<Klant>().Property(klant => klant.Familienaam).HasMaxLength(50);
+			modelBuilder.Entity<Klant>().Property(klant => klant.Voornaam).HasMaxLength(50);
 			modelBuilder.Entity<Klant>().Property(klant => klant.Telefoonnr).HasMaxLength(15);
 			modelBuilder.Entity<Klant>().Property(klant => klant.Gsmnr).HasMaxLength(15);
+			modelBuilder.Entity<Klant>().Property(klant => klant.Email);
 			modelBuilder.Entity<Klant>().HasOne(klant => klant.Adres);
 			
 

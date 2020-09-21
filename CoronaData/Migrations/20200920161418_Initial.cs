@@ -2,7 +2,7 @@
 
 namespace CoronaData.Migrations
 {
-    public partial class InitialStructure : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -63,8 +63,10 @@ namespace CoronaData.Migrations
                 {
                     Klantnr = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Familienaam = table.Column<string>(maxLength: 50, nullable: false),
-                    Voornaam = table.Column<string>(maxLength: 50, nullable: false),
+                    UserName = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    Familienaam = table.Column<string>(maxLength: 50, nullable: true),
+                    Voornaam = table.Column<string>(maxLength: 50, nullable: true),
                     Telefoonnr = table.Column<string>(maxLength: 15, nullable: true),
                     Gsmnr = table.Column<string>(maxLength: 15, nullable: true),
                     AdresId = table.Column<int>(nullable: true)
@@ -127,6 +129,7 @@ namespace CoronaData.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(nullable: false),
                     Aantal = table.Column<int>(nullable: false),
+                    Prijs = table.Column<decimal>(nullable: false),
                     BestellingId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
