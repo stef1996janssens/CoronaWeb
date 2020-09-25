@@ -9,41 +9,24 @@ namespace CoronaServices
     public class KlantService
     {
         private readonly IKlantRepository klantRepository;
-        public KlantService (IKlantRepository klantRepository)
+        public KlantService(IKlantRepository klantRepository)
         {
             this.klantRepository = klantRepository;
         }
 
-        
-        public void VoegGegevensKlantToe(Klant form)
+        public async Task<Klant> GetKlant(int id)
         {
-            Klant klant = null;
-            klant = new Klant
-            {
-                Familienaam = form.Familienaam,
-                Voornaam = form.Voornaam,
-                Adres = new Adres
-                {
-                    Straatnaam = form.Adres.Straatnaam,
-                    Huisnr = form.Adres.Huisnr,
-                    Bus = form.Adres.Bus,
-                    Gemeente = new Gemeente
-                    {
-                        Naam = form.Adres.Gemeente.Naam,
-                        Postcode = form.Adres.Gemeente.Postcode
-                    }
-                },
-                Telefoonnr = form.Telefoonnr,
-                Gsmnr = form.Gsmnr
-            };
-
-            klantRepository.Add(klant);
-
+            return await klantRepository.GetKlantById(id);
         }
 
-        public async Task<List<Klant>> GetKlantByEmail(string email)
+        public async Task<Klant> GetKlantByMail(string email)
         {
-            return await klantRepository.GetKlantByEmail(email);
+            return await klantRepository.GetKlantByMail(email);
+        }
+
+        public void update(Klant klant)
+        {
+            klantRepository.update(klant);
         }
     }
 }

@@ -1,0 +1,55 @@
+﻿@model CoronaData.Models.Mandje
+     
+
+    <div class="card bg-dark text-white">
+        <img class="card-img img-fluid " src="~/images/home-banner.jpg" />
+        <div class="card-img-overlay text-lg-left">
+            <h1 class="display-3 font-weight-bolder" style="font-size:3rem">Winkelmandje</h1>
+            <p class="lead font-weight-bold"style="font-size:1rem">Bekijk en wijzig hier uw winkelmandje voordat u uw bestelling plaatst</p>
+        </div>
+    </div>
+    <br />
+@if(Model.Bestellijnen.Count == 0)
+{
+    <p>Uw winkelmandje is leeg voeg producten toe door in de webshop op de '+'-knop te klikken</p>
+}
+else
+{
+<table class="table table-bordered table-responsive-md">
+    <thead>
+        <tr>
+            <td></td>
+            <td>Product</td>
+            <td>Aantal</td>
+            <td>Eenheidsprijs</td>
+            <td>Prijs</td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var bestellijn in Model.Bestellijnen)
+        {
+            var png = ".png";
+            <tr>
+                <td ><img class="icon-bestellijn" style="min-width:30px; max-width:30px;" src="~/images/@bestellijn.ProductId@png" /></td>
+                <td>@bestellijn.ProductNaam</td>
+                <td>@bestellijn.Aantal</td>
+                <td>@Html.DisplayFor(m => bestellijn.Prijs)</td>
+                <td>@Html.DisplayFor(m => bestellijn.Waarde)</td>
+                <td><button>-</button></td>
+            </tr>
+        }
+        <tr>
+            <td>Totaal:</td>
+            <td>@Html.DisplayFor(m => m.TotalePrijs)</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><a asp-action="BestellingPlaatsen" asp-controller="Bestelling" class="btn btn-dark">Plaats bestelling</a></td>
+            
+        </tr>
+    </tbody>
+</table>
+}
+    

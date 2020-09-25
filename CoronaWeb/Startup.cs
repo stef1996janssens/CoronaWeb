@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using CoronaData.Repositories;
+using CoronaServices;
 
 namespace CoronaWeb
 {
@@ -31,7 +32,9 @@ namespace CoronaWeb
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddDbContext<CoronaDataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("coronaData")));
@@ -40,7 +43,30 @@ namespace CoronaWeb
             services.AddRazorPages();
 
             services.AddTransient<IKlantRepository, SQLKlantRepository>();
-            services.AddTransient<CoronaServices.KlantService>();
+            services.AddTransient<KlantService>();
+
+            services.AddTransient<IProductRepository, SQLProductRepository>();
+            services.AddTransient<ProductService>();
+
+            services.AddTransient<ISoortRepository, SQLSoortRepository>();
+            services.AddTransient<SoortService>();
+
+            services.AddTransient<IAdresRepository, SQLAdresRepository>();
+            services.AddTransient<AdresService>();
+
+            services.AddTransient<IBestellingRepository, SQLBestellingRepository>();
+            services.AddTransient<BestellingService>();
+
+            services.AddTransient<IGemeenteRepository, SQLGemeenteRepository>();
+            services.AddTransient<GemeenteService>();
+
+            services.AddTransient<ILocatieRepository, SQLLocatieRepository>();
+            services.AddTransient<LocatieService>();
+
+            services.AddSingleton<Microsoft.AspNetCore.Http.IHttpContextAccessor, Microsoft.AspNetCore.Http.HttpContextAccessor>();
+            services.AddSession();
+
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,9 +87,11 @@ namespace CoronaWeb
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader());
 
             app.UseEndpoints(endpoints =>
             {

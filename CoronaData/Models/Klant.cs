@@ -8,8 +8,7 @@ namespace CoronaData.Models
 {
     public class Klant
     {
-        public string UserName { get; set; }
-
+       
         public string Email { get; set; }
         public int Klantnr { get; set; }
         [Required(ErrorMessage = "dit veld is verplicht in te vullen")]
@@ -22,5 +21,6 @@ namespace CoronaData.Models
         public string Gsmnr { get; set; }
         public virtual Adres Adres { get; set; }
         public virtual ICollection<Bestelling> Bestellingen { get; set; } = new List<Bestelling>();
+        public bool Besmet { get; set; }
     }
 }

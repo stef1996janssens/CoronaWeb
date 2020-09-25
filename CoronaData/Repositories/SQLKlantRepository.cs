@@ -22,18 +22,19 @@ namespace CoronaData.Repositories
             context.SaveChanges();
         }
 
-        public Task<Klant> GetKlantById(int id)
+        public async Task<Klant> GetKlantById(int id)
         {
-            throw new NotImplementedException();
+            return await context.Klanten.FindAsync(id);
         }
 
-        public async Task<List<Klant>> GetKlantByEmail(string email)
+       public async Task<Klant> GetKlantByMail(string email)
         {
-            return await context.Klanten
-                .Where(klant => klant.Email == email)
-                .ToListAsync();
+           return await context.Klanten.Where(klant => klant.Email == email).FirstOrDefaultAsync();
         }
 
-        
+        public void update(Klant klant)
+        {
+            context.SaveChanges();
+        }
     }
 }

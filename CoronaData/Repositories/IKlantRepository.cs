@@ -11,6 +11,10 @@ namespace CoronaData.Repositories
         void Add(Klant klant);
 
         Task<Klant> GetKlantById(int id);
-        Task<List<Klant>> GetKlantByEmail(string email);
+
+        Task<Klant> GetKlantByMail(string email);
+
+        void update(Klant klant);
+        
     }
 }

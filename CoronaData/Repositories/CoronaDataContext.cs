@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Soort = CoronaData.Models.Soort;
 
 namespace CoronaData.Repositories
 {
@@ -23,6 +24,8 @@ namespace CoronaData.Repositories
 		public virtual DbSet<Bestelling> Bestellingen { get; set; }
 		public virtual DbSet<Locatie> Locaties { get; set; }
 		public virtual DbSet<Adres> Adressen { get; set; }
+		public virtual DbSet<Gemeente> Gemeenten { get; set; }
+		public virtual DbSet<Soort> Soorten { get; set; }
 
         //Constructors
 
@@ -57,12 +60,8 @@ namespace CoronaData.Repositories
 				var connectionString = configuration.GetConnectionString("coronaData");
 				if (connectionString != null) // Indien de naam is gevonden
 				{
-					optionsBuilder.UseSqlServer(
-					connectionString
-					, options => options.MaxBatchSize(150)); // Max aantal SQL commands die kunnen doorgestuurd worden naar de database
-					// .UseLoggerFactory(GetLoggerFactory())
-					// .EnableSensitiveDataLogging(true) // Toont de waarden van de parameters bij de logging
-					// .UseLazyLoadingProxies();
+					optionsBuilder.UseSqlServer(connectionString, options => options.MaxBatchSize(150));
+					
 				}
 			}
 			else
@@ -90,8 +89,17 @@ namespace CoronaData.Repositories
             modelBuilder.Entity<Product>().ToTable("Producten");
 			modelBuilder.Entity<Product>().HasKey(product => product.Id);
 			modelBuilder.Entity<Product>().Property(product => product.Naam).HasMaxLength(50).IsRequired();
-			modelBuilder.Entity<Product>().Property(product => product.Type).IsRequired();
+			modelBuilder.Entity<Product>().HasOne(product => product.Soort)
+				.WithMany(product => product.Producten)
+				.HasForeignKey(product => product.SoortId)
+				.HasConstraintName("FK_Soort_Product");
 			modelBuilder.Entity<Product>().Property(product => product.Prijs).IsRequired();
+
+			//Type
+			modelBuilder.Entity<Soort>().ToTable("ProductSoorten");
+			modelBuilder.Entity<Soort>().HasKey(soort => soort.Id);
+			modelBuilder.Entity<Soort>().Property(soort => soort.Naam).HasMaxLength(50).IsRequired();
+			
 
 			//Bestellijn
 			modelBuilder.Entity<Bestellijn>().ToTable("Bestellijnen");
@@ -133,7 +141,25 @@ namespace CoronaData.Repositories
 			modelBuilder.Entity<Locatie>().Property(locatie => locatie.Naam);
 			modelBuilder.Entity<Locatie>().HasOne(locatie => locatie.Adres);
 
-		
+			// SEEDING PRODUCTEN
+			modelBuilder.Entity<Product>().HasData(
+				new Product { Id = 1, Naam = "Mondmasker Herbruikbaar Zwart", Prijs = 4.99m, SoortId=1 },
+				new Product { Id = 2, Naam = "Mondmasker Herbruikbaar Wit", Prijs = 4.99m, SoortId = 1 },
+				new Product { Id = 3, Naam = "Wegwerp Mondmasker 5 stuks", Prijs=4.75m, SoortId = 1 },
+				new Product { Id=4, Naam="Wegwerp Mondmasker 10 stuks", Prijs=7.5m, SoortId = 1 },
+				new Product { Id= 5, Naam="HandSanitizer 150ml", Prijs=4.0m, SoortId = 2 },
+				new Product { Id=6, Naam = "HandSanitizer 500ml", Prijs=9.95m, SoortId = 2 },
+				new Product { Id = 7, Naam = "Ontsmettingsalcohol 70% 250ml", Prijs = 6.0m, SoortId = 3 },
+				new Product { Id = 8, Naam = "Ontsmettingsalcohol 90% 250ml", Prijs = 12.5m, SoortId = 3 }
+				);
+
+
+			// SEEDING TYPES
+			modelBuilder.Entity<Soort>().HasData(
+				new Soort { Id = 1, Naam = "Mondmasker" },
+				new Soort { Id = 2, Naam = "Handsanitizer" },
+				new Soort { Id = 3, Naam = "OntsmettingsAlcohol" }
+				);
         }
 	}
 }

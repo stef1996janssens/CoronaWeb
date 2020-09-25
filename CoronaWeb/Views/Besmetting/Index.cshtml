@@ -1,0 +1,73 @@
+﻿@model CoronaData.Models.BesmettingViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="card bg-dark text-white">
+    <img class="card-img img-fluid " src="~/images/home-banner.jpg" />
+    <div class="card-img-overlay text-lg-left">
+        <h1 class="display-3 font-weight-bolder" style="font-size:3rem">Besmetting</h1>
+
+        <p class="lead font-weight-bold embed-responsive" style="font-size:1rem">Duid aan of u besmet bent met Covid-19, kijk of u in contact bent geweest met een persoon die besmet is</p>
+    </div>
+</div>
+<br />
+
+<form method="post" asp-action="BesmettingAanpassen">
+    <div class="row">
+        <div class="col-sm-2">
+            <p>Ik ben: </p>
+        </div>
+        <div class=col-sm-4>
+            @Html.RadioButtonFor(m => m.Klant.Besmet, true) Besmet met Covid-19
+        </div>
+        <div class="col-sm-4">
+            @Html.RadioButtonFor(m => m.Klant.Besmet, false) Niet besmet met Covid-19
+        </div>
+        <div class="col-sm">
+            <input type="submit" value="Bevestig" class="btn btn-dark" />
+        </div>
+    </div>
+
+    <br />
+    <hr />
+    <br />
+    @if (Model.LocatiesMetBesmettingsGevaar.Count != 0)
+    {
+        <p>Op volgende locaties liep u het risico Covid-19 op te lopen, laat u preventief testen!</p>
+        <br />
+        <table class="table table-bordered table-responsive-md">
+            <thead>
+                <tr>
+                    <td>Naam</td>
+                    <td>Straatnaam</td>
+                    <td>Huisnr</td>
+                    <td>Bus</td>
+                    <td>Gemeente</td>
+                    <td>Postcode</td>
+                    <td>Van</td>
+                    <td>Tot</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var locatie in Model.LocatiesMetBesmettingsGevaar)
+                {
+                <tr>
+                    <td>@locatie.Naam</td>
+                    <td>@locatie.Adres.Straatnaam</td>
+                    <td>@locatie.Adres.Huisnr</td>
+                    <td>@locatie.Adres.Bus</td>
+                    <td>@locatie.Adres.Gemeente.Naam</td>
+                    <td>@locatie.Adres.Gemeente.Postcode</td>
+                    <td>@locatie.Van</td>
+                    <td>@locatie.Tot.AddHours(2)</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+
+    }
+</form>

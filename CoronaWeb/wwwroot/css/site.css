@@ -73,3 +73,12 @@ body {
     width: 25%;
     height: auto;
 }
+
+.icon-bestellijn{
+    max-width:25%;
+    display:block;
+    height: auto;
+}
+.validation-summary-valid {
+    display: none;
+}

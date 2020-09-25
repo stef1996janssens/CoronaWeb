@@ -127,6 +127,9 @@ namespace CoronaData.Migrations
                     b.Property<int?>("AdresId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Besmet")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -143,9 +146,6 @@ namespace CoronaData.Migrations
                     b.Property<string>("Telefoonnr")
                         .HasColumnType("nvarchar(15)")
                         .HasMaxLength(15);
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Voornaam")
                         .IsRequired()
@@ -166,11 +166,24 @@ namespace CoronaData.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AdresId")
+                    b.Property<int>("AdresId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Besmetting")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("KlantId")
                         .HasColumnType("int");
 
                     b.Property<string>("Naam")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Tot")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Van")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -194,12 +207,106 @@ namespace CoronaData.Migrations
                     b.Property<decimal>("Prijs")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Type")
+                    b.Property<int>("SoortId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SoortId");
+
                     b.ToTable("Producten");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Naam = "Mondmasker Herbruikbaar Zwart",
+                            Prijs = 4.99m,
+                            SoortId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Naam = "Mondmasker Herbruikbaar Wit",
+                            Prijs = 4.99m,
+                            SoortId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Naam = "Wegwerp Mondmasker 5 stuks",
+                            Prijs = 4.75m,
+                            SoortId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Naam = "Wegwerp Mondmasker 10 stuks",
+                            Prijs = 7.5m,
+                            SoortId = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Naam = "HandSanitizer 150ml",
+                            Prijs = 4.0m,
+                            SoortId = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Naam = "HandSanitizer 500ml",
+                            Prijs = 9.95m,
+                            SoortId = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Naam = "Ontsmettingsalcohol 70% 250ml",
+                            Prijs = 6.0m,
+                            SoortId = 3
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Naam = "Ontsmettingsalcohol 90% 250ml",
+                            Prijs = 12.5m,
+                            SoortId = 3
+                        });
+                });
+
+            modelBuilder.Entity("CoronaData.Models.Soort", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Naam")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductSoorten");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Naam = "Mondmasker"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Naam = "Handsanitizer"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Naam = "OntsmettingsAlcohol"
+                        });
                 });
 
             modelBuilder.Entity("CoronaData.Models.Adres", b =>
@@ -247,7 +354,19 @@ namespace CoronaData.Migrations
                 {
                     b.HasOne("CoronaData.Models.Adres", "Adres")
                         .WithMany()
-                        .HasForeignKey("AdresId");
+                        .HasForeignKey("AdresId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CoronaData.Models.Product", b =>
+                {
+                    b.HasOne("CoronaData.Models.Soort", "Soort")
+                        .WithMany("Producten")
+                        .HasForeignKey("SoortId")
+                        .HasConstraintName("FK_Soort_Product")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

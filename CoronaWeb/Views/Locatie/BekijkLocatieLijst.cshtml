@@ -1,0 +1,56 @@
+﻿@model IEnumerable<CoronaData.Models.Locatie>
+@{
+    ViewData["Title"] = "BekijkLocatieLijst";
+}
+<div class="card bg-dark text-white">
+    <img class="card-img img-fluid " src="~/images/home-banner.jpg" />
+    <div class="card-img-overlay text-lg-left">
+        <h1 class="display-3 font-weight-bolder" style="font-size:3rem">Locatielijst</h1>
+
+        <p class="lead font-weight-bold embed-responsive" style="font-size:1rem">Bekijk de lijst met locaties die u bezocht</p>
+    </div>
+</div>
+<br />
+
+@if (Model.Count() == 0)
+{
+    <p>U heeft nog geen locaties toegevoegd aan uw lijst. Voeg een locatie in waar u bent geweest</p>
+}
+else
+{
+    <table class="table table-bordered table-responsive-md">
+        <thead>
+            <tr>
+                <td>Naam</td>
+                <td>Straatnaam</td>
+                <td>Huisnr</td>
+                <td>Bus</td>
+                <td>Gemeente</td>
+                <td>Postcode</td>
+                <td>Van</td>
+                <td>Tot</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var locatie in Model)
+            {
+            <tr>
+                <td>@locatie.Naam</td>
+                <td>@locatie.Adres.Straatnaam</td>
+                <td>@locatie.Adres.Huisnr</td>
+                <td>@locatie.Adres.Bus</td>
+                <td>@locatie.Adres.Gemeente.Naam</td>
+                <td>@locatie.Adres.Gemeente.Postcode</td>
+                <td>@Html.DisplayFor(m => locatie.Van)</td>
+                <td>@Html.DisplayFor(m => locatie.Tot)</td>
+                <td><a asp-action="VerwijderLocatie" asp-controller="Locatie" asp-route-id="@locatie.Id"><img src="~/images/verwijder.png" style="min-width:30px; max-width:30px;" /></a></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    
+}
+
+

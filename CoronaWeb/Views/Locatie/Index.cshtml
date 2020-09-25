@@ -1,27 +1,24 @@
-﻿@model CoronaData.Models.Klant
+﻿@model CoronaData.Models.Locatie
 @{
-    ViewData["Title"] = "Persoonlijke gegevens";
+    ViewData["Title"] = "Locaties";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="card bg-dark text-white">
+    <img class="card-img img-fluid " src="~/images/home-banner.jpg" />
+    <div class="card-img-overlay text-lg-left">
+        <h1 class="display-3 font-weight-bolder" style="font-size:3rem">Locaties</h1>
+
+        <p class="lead font-weight-bold embed-responsive" style="font-size:1rem">Voeg een locatie die je bezocht hebt toe</p>
+    </div>
+</div>
+
 <p class="lead">Velden met * zijn verplicht in te vullen</p>
-<form method="post" asp-action="klantGegevensToevoegen" asp-controller="Klant">
+<form method="post" asp-action="LocatieToevoegen" asp-controller="Locatie">
     <div class="row">
         <div class="form-group col-md-4">
-            <span><label asp-for="Voornaam"></label> *</span>
-            <input asp-for="Voornaam" class="form-control" placeholder="Stef" />
-            <span asp-validation-for="Voornaam" class="text-danger"></span>
+            <span><label asp-for="Naam"></label> *</span>
+            <input asp-for="Naam" class="form-control" placeholder="'t Ribbetje" autofocus />
         </div>
-        <div class="form-group col-md-4">
-            <span><label asp-for="Familienaam"></label> *</span>
-            <input asp-for="Familienaam" class="form-control" placeholder="Janssens" />
-            <span asp-validation-for="Familienaam" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group col-md-4">
-        <span><label asp-for="Email"></label> *</span>
-        <input asp-for="Email" class="form-control" placeholder="Janssens" />
-        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
     <div class="row">
         <div class="form-group col-md-4">
@@ -53,18 +50,22 @@
         </div>
     </div>
     <div class="row">
+        <p class="alert-danger">@ViewBag.VanTot</p>
+    </div>
+    <div class="row">
         <div class="form-group col-md-4">
-            <span><label>Gsm-nummer</label> *</span>
-            <input asp-for="Gsmnr" class="form-control" placeholder="0499 70 58 14" />
-            <span asp-validation-for="Gsmnr" class="text-danger"></span>
+            <span><label>Van</label> *</span>
+            <input asp-for="Van" class="form-control" placeholder="Torhout" />
+            <span asp-validation-for="Van" class="text-danger"></span>
         </div>
         <div class="form-group col-md-4">
-            <label>Telefoonnummer</label>
-            <input asp-for="Telefoonnr" class="form-control" />
-            <span asp-validation-for="Telefoonnr" class="text-danger"></span>
+            <span><label>Tot</label> *</span>
+            <input asp-for="Tot" class="form-control" placeholder="Torhout" />
+            <span asp-validation-for="Tot" class="text-danger"></span>
         </div>
     </div>
-    <input type="submit" value="Gegevens opslaan" class="btn btn-dark" />
+    <input type="submit" value="Locatie toevoegen" class="btn btn-dark" />
 </form>
+<br />
 
-
+<a asp-action="BekijkLocatieLijst" asp-controller="Locatie" class="btn btn-dark">Bekijk lijst met locaties</a>
